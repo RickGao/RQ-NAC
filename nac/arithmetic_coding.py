@@ -1,6 +1,4 @@
-from typing import Dict, Tuple, List, Set, Optional
-from collections import defaultdict
-import copy
+from typing import Dict, Tuple, List, Set
 
 
 class ArithmeticEncoder:
@@ -269,6 +267,9 @@ class ArithmeticEncoder:
         """
         self._ranges_cache.clear()
         self._sorted_symbols_cache.clear()
+
+
+
 
 
 # =================== Test Function ===================
