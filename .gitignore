@@ -1,1 +1,4 @@
 .DS_Store
+/.idea
+/nac/models
+/nac/logs
