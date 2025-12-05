@@ -37,17 +37,14 @@ https://www.kaggle.com/datasets/mdfahimbinamin/100k-vehicle-dashcam-image-datase
 
 Project directory should look like:
 
+```bash
 rq-vae/
-
 └── data/
-
     └── vehicle/
-
         ├── train/        # Training set for model training
-
         ├── val/          # Validation / inference set
-
         └── test/
+```
 
 Case Study
 
