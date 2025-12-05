@@ -1,6 +1,6 @@
 # Residual Quantization with N-gram–driven Arithmetic Coding (RQ-NAC)
 
-RQ-NAC is an efficient image compression framework combining **Residual Quantization V(RQ)** with **N-gram–driven Arithmetic Coding (NAC)**.  
+RQ-NAC is an efficient image compression framework combining **Residual Quantization (RQ)** with **N-gram–driven Arithmetic Coding (NAC)**.  
 
 ---
 
