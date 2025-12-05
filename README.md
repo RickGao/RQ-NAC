@@ -58,6 +58,7 @@ https://www.kaggle.com/datasets/asefjamilajwad/car-crash-dataset-ccd
 Train and Evaluate
 
 ```bash
+
 # Go to RQ-VAE folder
 cd rq-vae
 
@@ -91,12 +92,12 @@ nac/data/ contains RQ-VAE generated codes from different configurations and can 
 # Run NAC
 python nac.py
 
-
 ```
 
 To run different NAC configurations, modify the following parameters inside the script:
 
 ```bash
+
 # N-gram order
 N = 2
 
