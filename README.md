@@ -122,6 +122,7 @@ This project uses the RQ-VAE Transformer implementation from KakaoBrain:
 https://github.com/kakaobrain/rq-vae-transformer
 
 The NAC implementation is inspired by the following open-source projects:
+
 https://github.com/gustavecortal/ngram
 
 https://github.com/tommyod/arithmetic-coding
