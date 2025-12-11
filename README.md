@@ -1,7 +1,7 @@
 # Residual Quantization with N-gram–driven Arithmetic Coding (RQ-NAC)
 
 <p align="center">
-  <img src="assets/rqnac.jpg" width="800" alt="RQ-NAC Workflow">
+  <img src="asset/rqnac.jpg" width="800" alt="RQ-NAC">
 </p>
 
 RQ-NAC is a two-stage semantic compression framework designed for efficient visual data transmission over bandwidth-constrained channels. The pipeline integrates **Residual Quantization (RQ)** with **N-gram–driven Arithmetic Coding (NAC)**.
