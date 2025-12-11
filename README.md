@@ -75,7 +75,7 @@ cd rq-vae
 torchrun --standalone --nnodes=1 --nproc_per_node=8   main_stage1.py -m=$CONFIG_DIR -r=$SAVE_DIR
 
 # Example
-torchrun --standalone --nnodes=1 --nproc_per_node=8   main_stage1.py -m=configs/vehicle/stage1/vehicle-rqvae-23x40x4.yaml -r=output
+torchrun --standalone --nnodes=1 --nproc_per_node=8   main_stage1.py -m=configs/vehicle/stage1/vehicle-rqvae-23x40x4.yaml -r=output/vehicle
 
 # Evaluate RQ-VAE
 python compute_recon.py --split=val --vqvae=$RQVAE_CKPT
