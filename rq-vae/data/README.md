@@ -6,6 +6,57 @@ After you download each dataset, please use the directory path, which includes t
 If you have already downloaded a dataset, you can use its path as `root` for the `Dataset` classes.
 
 
+## Vehicle
+
+Download the dataset from Kaggle and extract it to:
+
+rq-vae/data/vehicle
+
+Primary dataset:
+https://www.kaggle.com/datasets/mdfahimbinamin/100k-vehicle-dashcam-image-dataset
+
+
+```bash
+rq-vae/
+└── data/
+    └── vehicle/
+        ├── train/        # Training set for model training
+        ├── val/          # Validation / inference set
+        └── test/
+```
+
+Case Study
+
+To run a case study, simply replace all the images in:
+
+rq-vae/data/vehicle/val
+
+Case study dataset (Car Crash):
+https://www.kaggle.com/datasets/asefjamilajwad/car-crash-dataset-ccd
+
+
+
+### Customizing the Vehicle Dataset
+
+**1. Adjusting the Number of Images**
+
+Modify `rqvae/img_datasets/__init__.py`:
+
+dataset_trn = Vehicle(root, split='train', transform=transforms_trn, max_samples=5000)  # Number of training images
+dataset_val = Vehicle(root, split='val', transform=transforms_val, max_samples=1000)    # Number of validation imagesSet to `None` to use all available images.
+
+**2. Adjusting the Dataset File Location**
+
+Modify `rqvae/img_datasets/vehicle.py` to change the directory structure.
+
+**3. Adjusting Image Padding**
+
+Modify the `Pad` parameters in `rqvae/img_datasets/transforms.py`:
+
+transforms.Pad((0, 8, 0, 8), fill=0, padding_mode='constant')  # (left, top, right, bottom)
+
+
+
 ## FFHQ
 Before you download the FFHQ dataset, you can refer to the details in [the official repository](https://github.com/NVlabs/ffhq-dataset).  
 You can download the zip file for FFHQ images 1024x1024 at [this link](https://drive.google.com/file/d/1WvlAIvuochQn_L_f9p3OdFdTiSLlnnhv/view?usp=sharing).   

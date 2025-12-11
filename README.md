@@ -1,6 +1,15 @@
 # Residual Quantization with N-gram–driven Arithmetic Coding (RQ-NAC)
 
-RQ-NAC is an efficient image compression framework combining **Residual Quantization (RQ)** with **N-gram–driven Arithmetic Coding (NAC)**.  
+<p align="center">
+  <img src="assets/rqnac.jpg" width="800" alt="RQ-NAC Workflow">
+</p>
+
+RQ-NAC is a two-stage semantic compression framework designed for efficient visual data transmission over bandwidth-constrained channels. The pipeline integrates **Residual Quantization (RQ)** with **N-gram–driven Arithmetic Coding (NAC)**.
+
+- **RQ-based Encoder**: Generates compact discrete semantic representations, expanding representational capacity exponentially with quantization depth.
+- **Context-adaptive Entropy Module**: Removes redundancy in latent indices via N-gram modeling for lossless compression.
+
+RQ-NAC achieves compression ratios exceeding **600×** relative to the uncompressed RGB image size while maintaining strong perceptual quality.
 
 ---
 
@@ -48,11 +57,11 @@ rq-vae/
 
 Case Study
 
-To run a case study, simply replace the images in:
+To run a case study, simply replace all the images in:
 
 rq-vae/data/vehicle/val
 
-Case study dataset:
+Case study dataset (Car Crash):
 https://www.kaggle.com/datasets/asefjamilajwad/car-crash-dataset-ccd
 
 Train and Evaluate
@@ -66,7 +75,7 @@ cd rq-vae
 torchrun --standalone --nnodes=1 --nproc_per_node=8   main_stage1.py -m=$CONFIG_DIR -r=$SAVE_DIR
 
 # Example
-torchrun --standalone --nnodes=1 --nproc_per_node=8   main_stage1.py -m=configs/vehicle/stage1/vehicle-rqvae-23x40x4.yaml -r=$SAVE_DIR
+torchrun --standalone --nnodes=1 --nproc_per_node=8   main_stage1.py -m=configs/vehicle/stage1/vehicle-rqvae-23x40x4.yaml -r=output
 
 # Evaluate RQ-VAE
 python compute_recon.py --split=val --vqvae=$RQVAE_CKPT
