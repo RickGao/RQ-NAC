@@ -19,6 +19,8 @@ from torch.utils.data import Subset
 import torchvision
 from torchvision.datasets import ImageNet
 
+from .lsun import LSUNClass
+from .ffhq import FFHQ
 from .transforms import create_transforms
 from .vehicle import Vehicle
 
