@@ -34,7 +34,7 @@ pip install -r requirements.txt
 
 ## Training and Evaluation of RQ-VAE
 
-Dataset
+**Dataset**
 
 Download the dataset from Kaggle and extract it to:
 
@@ -64,7 +64,7 @@ rq-vae/data/vehicle/val
 Case study dataset (Car Crash):
 https://www.kaggle.com/datasets/asefjamilajwad/car-crash-dataset-ccd
 
-Train and Evaluate
+**Train and Evaluate**
 
 ```bash
 
@@ -124,7 +124,7 @@ The script will load data/codes23x40xD.txt and construct an N-gram frequency tab
 ---
 
 
-Acknowledgement
+**Acknowledgement**
 
 This project uses the RQ-VAE Transformer implementation from KakaoBrain:
 
