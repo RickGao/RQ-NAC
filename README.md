@@ -98,7 +98,12 @@ nac/data/ contains RQ-VAE generated codes from different configurations and can 
 
 ```bash
 
+# Go to NAC folder
+
+cd nac
+
 # Run NAC
+
 python nac.py
 
 ```
