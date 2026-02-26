@@ -13,7 +13,7 @@ RQ-NAC achieves compression ratios exceeding **600×** relative to the uncompres
 
 ---
 
-Profiling
+# Profiling Result
 
 | Depth | RQ-VAE (ms) | NAC (ms) |
 |-------|------------|----------|
@@ -25,7 +25,7 @@ Profiling
 
 # RQ-VAE Architecture (Expanded, Encoder–Decoder Symmetric)
 
-## Encoder (down)
+## Encoder
 | Stage | Block pattern | Channels (in→out) | Attn | Downsample |
 |-----------|----------------|-------------------|------|------------|
 | conv_in   | Conv 3×3       | 3 → 128           | No   | No |
@@ -44,7 +44,7 @@ Profiling
 | quant_conv / post_quant_conv | 1×1 conv (256→256) |
 | RQ codebooks | 4 × VQEmbedding (K=2049, D=256) |
 
-## Decoder (up)
+## Decoder
 | Stage | Block pattern | Channels (in→out) | Attn | Upsample |
 |----------|----------------|-------------------|------|----------|
 | conv_in  | Conv 3×3       | 256 → 512         | No   | No |
@@ -58,6 +58,7 @@ Profiling
 | out      | GN + Conv 3×3  | 128 → 3           | No   | No |
 
 
+---
 
 ## Environment
 
