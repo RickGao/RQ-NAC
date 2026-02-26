@@ -42,7 +42,7 @@ RQ-NAC achieves compression ratios exceeding **600×** relative to the uncompres
 | Component | Spec |
 |----------|------|
 | quant_conv / post_quant_conv | 1×1 conv (256→256) |
-| RQ codebooks | 4 × VQEmbedding (K=2049, D=256) |
+| RQ codebooks | 4 × VQEmbedding (K=2048, D=256) |
 
 ## Decoder
 | Stage | Block pattern | Channels (in→out) | Attn | Upsample |
