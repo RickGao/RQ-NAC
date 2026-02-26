@@ -33,7 +33,7 @@ RQ-NAC achieves compression ratios exceeding **600×** relative to the uncompres
 | down[1]   | 2× ResBlock    | 128 → 128         | No   | stride-2 conv |
 | down[2]   | 2× ResBlock    | 128 → 256         | No   | stride-2 conv |
 | down[3]   | 2× ResBlock    | 256 → 256         | No   | stride-2 conv |
-| down[4]   | 2× ResBlock    | 256 → 512         | Yes (2× AttnBlock) | stride-2 conv |
+| down[4]   | 2× ResBlock    | 256 → 512         | Yes  | stride-2 conv |
 | down[5]   | 2× ResBlock    | 512 → 512         | No   | No |
 | mid       | ResBlock → Attn → ResBlock | 512 → 512 | Yes | No |
 | out       | GN + Conv 3×3  | 512 → 256         | No   | No |
@@ -50,7 +50,7 @@ RQ-NAC achieves compression ratios exceeding **600×** relative to the uncompres
 | conv_in  | Conv 3×3       | 256 → 512         | No   | No |
 | mid      | ResBlock → Attn → ResBlock | 512 → 512 | Yes | No |
 | up[5]    | 3× ResBlock    | 512 → 512         | No   | Yes (conv upsample) |
-| up[4]    | 3× ResBlock    | 512 → 512         | Yes (3× AttnBlock) | Yes (conv upsample) |
+| up[4]    | 3× ResBlock    | 512 → 512         | Yes  | Yes (conv upsample) |
 | up[3]    | 3× ResBlock    | 512 → 256         | No   | Yes (conv upsample) |
 | up[2]    | 3× ResBlock    | 256 → 256         | No   | Yes (conv upsample) |
 | up[1]    | 3× ResBlock    | 256 → 128         | No   | Yes (conv upsample) |
