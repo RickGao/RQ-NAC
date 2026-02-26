@@ -15,6 +15,10 @@ RQ-NAC achieves compression ratios exceeding **600×** relative to the uncompres
 
 ## Profiling Result
 
+The profiling results report the average inference time per image under an edge-device setting to simulate practical deployment conditions.
+
+Experiments are conducted on an edge device equipped with an NVIDIA RTX 5080 Laptop GPU and an Intel Core Ultra 9 275HX CPU.
+
 ### Compress (Encode)
 
 | Depth | RQ-VAE (ms) | NAC (ms) |
