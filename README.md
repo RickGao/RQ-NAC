@@ -24,7 +24,7 @@ Experiments are conducted on an edge device equipped with an NVIDIA RTX 5080 Lap
 | Depth | RQ-VAE (ms) | NAC (ms) |
 |-------|------------|----------|
 | x4    | 119.0571   | 15.7462  |
-| x8    | 127.3597   | 22.8375  |
+| x8    | 120.4951   | 22.8375  |
 | x16   | 120.2094   | 36.4351  |
 
 
