@@ -1,6 +1,6 @@
 from ngram import NGramModel
 from arithmetic_coding import ArithmeticEncoder
-import sys, logging, os
+import sys, logging, os, time
 
 
 def readcode(filename, n=None):
@@ -71,24 +71,42 @@ print("Encoder Created")
 codes = readcode(filename, 1000)[900:1000]
 
 avgrate = []
+encode_times_ms = []
+decode_times_ms = []
 
 for i in range(len(codes)):
     logger.info(f"Code: {i}")
     test_sequence = codes[i]
+
+    t0 = time.perf_counter()
     encoded_bits = encoder.encode(test_sequence)
-    # print(f"\nOriginal Sequence: {test_sequence}")
-    # print(encoded_bits)
-    logger.info(f"Encoded: {len(encoded_bits)} bits")
+    t1 = time.perf_counter()
+    encode_ms = (t1 - t0) * 1000.0
+    encode_times_ms.append(encode_ms)
+
+    logger.info(f"Encoded: {len(encoded_bits)} bits, encode_time={encode_ms:.4f} ms")
     rate = len(encoded_bits) / (len(test_sequence) * 11)
     avgrate.append(rate)
     logger.info(f"Compression Rate: {rate:.2%}")
 
-
+    t0 = time.perf_counter()
     decoded_sequence = encoder.decode(encoded_bits)
-    # print(f"Decoded Sequence: {decoded_sequence}")
+    t1 = time.perf_counter()
+    decode_ms = (t1 - t0) * 1000.0
+    decode_times_ms.append(decode_ms)
+
+    logger.info(f"Decode_time={decode_ms:.4f} ms")
     logger.info(f"Verification: {'Correct' if decoded_sequence == test_sequence else 'Wrong'}")
 
 logger.info(f"Average Compression Rate: {sum(avgrate)/len(avgrate):.2%}")
+logger.info("")
+logger.info("Timing summary (ms):")
+avg_encode = sum(encode_times_ms) / len(encode_times_ms)
+avg_decode = sum(decode_times_ms) / len(decode_times_ms)
+logger.info(f"  Average encode time: {avg_encode:.4f} ms")
+logger.info(f"  Average decode time: {avg_decode:.4f} ms")
+logger.info(f"  encode: min={min(encode_times_ms):.4f}, max={max(encode_times_ms):.4f}")
+logger.info(f"  decode: min={min(decode_times_ms):.4f}, max={max(decode_times_ms):.4f}")
 
 
 
