@@ -28,6 +28,14 @@ Experiments are conducted on an edge device equipped with an NVIDIA RTX 5080 Lap
 | x16   | 120.2094   | 36.4351  |
 
 
+### Restore (Decode)
+
+| Depth | RQ-VAE (ms) | NAC (ms) |
+|-------|------------|----------|
+| x4    | 196.3354   | 114.7885  |
+| x8    | 195.2968   | 205.2417  |
+| x16   | 195.3817   | 475.0927  |
+
 
 ## RQ-VAE Architecture
 
