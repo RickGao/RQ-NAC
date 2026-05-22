@@ -1,6 +1,13 @@
 from ngram import NGramModel
-from arithmetic_coding import ArithmeticEncoder
-import sys, logging, os, time
+from arithmetic_coding import (
+    ArithmeticEncoder,
+    profile_encode_decode,
+    profile_stats_lines,
+    _format_bytes,
+)
+import sys, logging, os
+
+import psutil
 
 
 def readcode(filename, n=None):
@@ -73,30 +80,35 @@ codes = readcode(filename, 1000)[900:1000]
 avgrate = []
 encode_times_ms = []
 decode_times_ms = []
+encode_cpu_times_ms = []
+decode_cpu_times_ms = []
+mem_after_decode_bytes = []
+mem_delta_bytes = []
 
 for i in range(len(codes)):
     logger.info(f"Code: {i}")
     test_sequence = codes[i]
 
-    t0 = time.perf_counter()
-    encoded_bits = encoder.encode(test_sequence)
-    t1 = time.perf_counter()
-    encode_ms = (t1 - t0) * 1000.0
-    encode_times_ms.append(encode_ms)
+    stats = profile_encode_decode(encoder, test_sequence)
+    encoded_bits = stats["encoded"]
+    decoded_sequence = stats["decoded"]
 
-    logger.info(f"Encoded: {len(encoded_bits)} bits, encode_time={encode_ms:.4f} ms")
+    encode_ms = stats["encode_wall_s"] * 1000.0
+    decode_ms = stats["decode_wall_s"] * 1000.0
+    encode_times_ms.append(encode_ms)
+    decode_times_ms.append(decode_ms)
+    encode_cpu_times_ms.append(stats["encode_cpu_total_s"] * 1000.0)
+    decode_cpu_times_ms.append(stats["decode_cpu_total_s"] * 1000.0)
+    mem_after_decode_bytes.append(stats["mem_after_decode_bytes"])
+    mem_delta_bytes.append(stats["mem_delta_bytes"])
+
+    logger.info(f"Encoded: {len(encoded_bits)} bits")
     rate = len(encoded_bits) / (len(test_sequence) * 11)
     avgrate.append(rate)
     logger.info(f"Compression Rate: {rate:.2%}")
-
-    t0 = time.perf_counter()
-    decoded_sequence = encoder.decode(encoded_bits)
-    t1 = time.perf_counter()
-    decode_ms = (t1 - t0) * 1000.0
-    decode_times_ms.append(decode_ms)
-
-    logger.info(f"Decode_time={decode_ms:.4f} ms")
     logger.info(f"Verification: {'Correct' if decoded_sequence == test_sequence else 'Wrong'}")
+    for line in profile_stats_lines(stats):
+        logger.info(line)
 
 logger.info(f"Average Compression Rate: {sum(avgrate)/len(avgrate):.2%}")
 logger.info("")
@@ -107,6 +119,19 @@ logger.info(f"  Average encode time: {avg_encode:.4f} ms")
 logger.info(f"  Average decode time: {avg_decode:.4f} ms")
 logger.info(f"  encode: min={min(encode_times_ms):.4f}, max={max(encode_times_ms):.4f}")
 logger.info(f"  decode: min={min(decode_times_ms):.4f}, max={max(decode_times_ms):.4f}")
+avg_encode_cpu = sum(encode_cpu_times_ms) / len(encode_cpu_times_ms)
+avg_decode_cpu = sum(decode_cpu_times_ms) / len(decode_cpu_times_ms)
+logger.info("")
+logger.info("CPU time summary (ms):")
+logger.info(f"  Average encode CPU: {avg_encode_cpu:.4f} ms")
+logger.info(f"  Average decode CPU: {avg_decode_cpu:.4f} ms")
+logger.info(f"  encode CPU: min={min(encode_cpu_times_ms):.4f}, max={max(encode_cpu_times_ms):.4f}")
+logger.info(f"  decode CPU: min={min(decode_cpu_times_ms):.4f}, max={max(decode_cpu_times_ms):.4f}")
+logger.info("")
+logger.info("Memory RSS summary:")
+logger.info(f"  Process RSS now: {_format_bytes(psutil.Process().memory_info().rss)}")
+logger.info(f"  Peak RSS after decode (per sample): {_format_bytes(max(mem_after_decode_bytes))}")
+logger.info(f"  Max RSS delta (per sample): {_format_bytes(max(mem_delta_bytes))}")
 
 
 

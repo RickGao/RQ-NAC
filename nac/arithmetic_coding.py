@@ -333,21 +333,28 @@ def profile_encode_decode(encoder, message: List[int]) -> dict:
     }
 
 
+def profile_stats_lines(stats: dict) -> List[str]:
+    return [
+        f"Wall time:  encode {stats['encode_wall_s']*1000:.4f} ms, "
+        f"decode {stats['decode_wall_s']*1000:.4f} ms, "
+        f"total {stats['total_wall_s']*1000:.4f} ms",
+        f"CPU time:   encode {stats['encode_cpu_total_s']*1000:.4f} ms "
+        f"(user {stats['encode_cpu_user_s']*1000:.4f}, "
+        f"sys {stats['encode_cpu_system_s']*1000:.4f}), "
+        f"decode {stats['decode_cpu_total_s']*1000:.4f} ms "
+        f"(user {stats['decode_cpu_user_s']*1000:.4f}, "
+        f"sys {stats['decode_cpu_system_s']*1000:.4f}), "
+        f"total {stats['total_cpu_s']*1000:.4f} ms",
+        f"Memory RSS: before {_format_bytes(stats['mem_before_bytes'])}, "
+        f"after encode {_format_bytes(stats['mem_after_encode_bytes'])}, "
+        f"after decode {_format_bytes(stats['mem_after_decode_bytes'])}, "
+        f"delta {_format_bytes(stats['mem_delta_bytes'])}",
+    ]
+
+
 def print_profile_stats(stats: dict) -> None:
-    print(f"  Wall time:  encode {stats['encode_wall_s']*1000:.3f} ms, "
-          f"decode {stats['decode_wall_s']*1000:.3f} ms, "
-          f"total {stats['total_wall_s']*1000:.3f} ms")
-    print(f"  CPU time:   encode {stats['encode_cpu_total_s']*1000:.3f} ms "
-          f"(user {stats['encode_cpu_user_s']*1000:.3f}, "
-          f"sys {stats['encode_cpu_system_s']*1000:.3f}), "
-          f"decode {stats['decode_cpu_total_s']*1000:.3f} ms "
-          f"(user {stats['decode_cpu_user_s']*1000:.3f}, "
-          f"sys {stats['decode_cpu_system_s']*1000:.3f}), "
-          f"total {stats['total_cpu_s']*1000:.3f} ms")
-    print(f"  Memory RSS: before {_format_bytes(stats['mem_before_bytes'])}, "
-          f"after encode {_format_bytes(stats['mem_after_encode_bytes'])}, "
-          f"after decode {_format_bytes(stats['mem_after_decode_bytes'])}, "
-          f"delta {_format_bytes(stats['mem_delta_bytes'])}")
+    for line in profile_stats_lines(stats):
+        print(f"  {line}")
 
 
 # =================== Test Function ===================
