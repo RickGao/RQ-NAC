@@ -1,4 +1,7 @@
+import time
 from typing import Dict, Tuple, List, Set
+
+import psutil
 
 
 class ArithmeticEncoder:
@@ -272,6 +275,81 @@ class ArithmeticEncoder:
 
 
 
+# =================== Profiling ===================
+
+def _format_bytes(n: int) -> str:
+    for unit in ("B", "KiB", "MiB", "GiB"):
+        if n < 1024:
+            return f"{n:.1f} {unit}"
+        n /= 1024
+    return f"{n:.1f} TiB"
+
+
+def _cpu_delta_s(before, after) -> tuple:
+    user = after.user - before.user
+    system = after.system - before.system
+    return user, system, user + system
+
+
+def profile_encode_decode(encoder, message: List[int]) -> dict:
+    """Profile encode/decode: wall time (perf_counter), CPU time and RSS (psutil)."""
+    process = psutil.Process()
+
+    mem_before = process.memory_info().rss
+    cpu_before = process.cpu_times()
+
+    t0 = time.perf_counter()
+    encoded = encoder.encode(message)
+    encode_wall_s = time.perf_counter() - t0
+    cpu_after_encode = process.cpu_times()
+    mem_after_encode = process.memory_info().rss
+
+    t0 = time.perf_counter()
+    decoded = encoder.decode(encoded)
+    decode_wall_s = time.perf_counter() - t0
+    cpu_after_decode = process.cpu_times()
+    mem_after_decode = process.memory_info().rss
+
+    enc_user, enc_sys, enc_cpu = _cpu_delta_s(cpu_before, cpu_after_encode)
+    dec_user, dec_sys, dec_cpu = _cpu_delta_s(cpu_after_encode, cpu_after_decode)
+
+    return {
+        "encoded": encoded,
+        "decoded": decoded,
+        "encode_wall_s": encode_wall_s,
+        "decode_wall_s": decode_wall_s,
+        "total_wall_s": encode_wall_s + decode_wall_s,
+        "encode_cpu_user_s": enc_user,
+        "encode_cpu_system_s": enc_sys,
+        "encode_cpu_total_s": enc_cpu,
+        "decode_cpu_user_s": dec_user,
+        "decode_cpu_system_s": dec_sys,
+        "decode_cpu_total_s": dec_cpu,
+        "total_cpu_s": enc_cpu + dec_cpu,
+        "mem_before_bytes": mem_before,
+        "mem_after_encode_bytes": mem_after_encode,
+        "mem_after_decode_bytes": mem_after_decode,
+        "mem_delta_bytes": mem_after_decode - mem_before,
+    }
+
+
+def print_profile_stats(stats: dict) -> None:
+    print(f"  Wall time:  encode {stats['encode_wall_s']*1000:.3f} ms, "
+          f"decode {stats['decode_wall_s']*1000:.3f} ms, "
+          f"total {stats['total_wall_s']*1000:.3f} ms")
+    print(f"  CPU time:   encode {stats['encode_cpu_total_s']*1000:.3f} ms "
+          f"(user {stats['encode_cpu_user_s']*1000:.3f}, "
+          f"sys {stats['encode_cpu_system_s']*1000:.3f}), "
+          f"decode {stats['decode_cpu_total_s']*1000:.3f} ms "
+          f"(user {stats['decode_cpu_user_s']*1000:.3f}, "
+          f"sys {stats['decode_cpu_system_s']*1000:.3f}), "
+          f"total {stats['total_cpu_s']*1000:.3f} ms")
+    print(f"  Memory RSS: before {_format_bytes(stats['mem_before_bytes'])}, "
+          f"after encode {_format_bytes(stats['mem_after_encode_bytes'])}, "
+          f"after decode {_format_bytes(stats['mem_after_decode_bytes'])}, "
+          f"delta {_format_bytes(stats['mem_delta_bytes'])}")
+
+
 # =================== Test Function ===================
 
 def test_encoder():
@@ -309,12 +387,14 @@ def test_encoder():
         print(f"Sequence: {test_seq[:20]}{'...' if len(test_seq) > 20 else ''}")
 
         try:
-            encoded = encoder.encode(test_seq)
-            decoded = encoder.decode(encoded)
+            stats = profile_encode_decode(encoder, test_seq)
+            encoded = stats["encoded"]
+            decoded = stats["decoded"]
 
             success = (decoded == test_seq)
             print(f"  Encoded bits: {len(encoded)}")
             print(f"  Decoded length: {len(decoded)}")
+            print_profile_stats(stats)
             print(f"  Status: {'✓ SUCCESS' if success else '✗ FAILED'}")
 
             if not success:
