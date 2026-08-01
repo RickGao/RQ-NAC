@@ -1,4 +1,7 @@
-# Residual Quantization with N-gram–driven Arithmetic Coding (RQ-NAC)
+# RQ-NAC
+
+This repository contains the official implementation of the paper: **Channel-Agnostic Semantic Compression for Bandwidth-Limited Visual Communication**. Accepted by IEEE GLOBECOM 2026. 📄 [Paper](paper/RQ-NAC.pdf)
+
 
 <p align="center">
   <img src="asset/rqnac.jpg" width="800" alt="RQ-NAC">
@@ -12,30 +15,6 @@ RQ-NAC is a two-stage semantic compression framework designed for efficient visu
 RQ-NAC achieves compression ratios exceeding **600×** relative to the uncompressed RGB image size while maintaining strong perceptual quality.
 
 ---
-
-## Profiling Result
-
-The profiling results report the average inference time per image under an edge-device setting to simulate practical deployment conditions.
-
-Experiments are conducted on an edge device equipped with an NVIDIA RTX 5080 Laptop GPU and an Intel Core Ultra 9 275HX CPU.
-
-### Compress (Encode)
-
-| Depth | RQ-VAE (ms) | NAC (ms) |
-|-------|------------|----------|
-| x4    | 119.0571   | 15.7462  |
-| x8    | 120.4951   | 22.8375  |
-| x16   | 120.2094   | 36.4351  |
-
-
-### Restore (Decode)
-
-| Depth | RQ-VAE (ms) | NAC (ms) |
-|-------|------------|----------|
-| x4    | 196.3354   | 114.7885  |
-| x8    | 195.2968   | 205.2417  |
-| x16   | 195.3817   | 475.0927  |
-
 
 ## RQ-VAE Architecture
 
@@ -187,6 +166,31 @@ D = 8
 The script will load data/codes23x40xD.txt and construct an N-gram frequency table using smoothing factor K.
 
 
+## Profiling Result
+
+The profiling results report the average inference time per image under an edge-device setting to simulate practical deployment conditions.
+
+Experiments are conducted on an edge device equipped with an NVIDIA RTX 5080 Laptop GPU and an Intel Core Ultra 9 275HX CPU.
+
+### Compress (Encode)
+
+| Depth | RQ-VAE (ms) | NAC (ms) |
+|-------|------------|----------|
+| x4    | 119.0571   | 15.7462  |
+| x8    | 120.4951   | 22.8375  |
+| x16   | 120.2094   | 36.4351  |
+
+
+### Restore (Decode)
+
+| Depth | RQ-VAE (ms) | NAC (ms) |
+|-------|------------|----------|
+| x4    | 196.3354   | 114.7885  |
+| x8    | 195.2968   | 205.2417  |
+| x16   | 195.3817   | 475.0927  |
+
+
+
 ---
 
 
@@ -201,3 +205,18 @@ The NAC implementation is inspired by the following open-source projects:
 https://github.com/gustavecortal/ngram
 
 https://github.com/tommyod/arithmetic-coding
+
+---
+
+## Citation
+
+If you find this work useful, please cite our paper:
+
+```bibtex
+@inproceedings{luo2026channel,
+  title     = {Channel-Agnostic Semantic Compression for Bandwidth-Limited Visual Communication},
+  author    = {Luo, Xuanhao and Gao, Ruichen and Li, Zhizhen and Chen, Mingzhe and Liu, Yuchen},
+  booktitle = {Proceedings of the IEEE Global Communications Conference (GLOBECOM)},
+  year      = {2026},
+  note      = {To appear}
+}
