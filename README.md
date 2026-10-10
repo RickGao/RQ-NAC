@@ -18,7 +18,7 @@ RQ-NAC achieves compression ratios exceeding **600×** relative to the uncompres
 
 ## RQ-VAE Architecture
 
-Total Parameters: 100.732M
+**Total Parameters: 100.732M**
 
 ### Encoder
 | Stage | Block pattern | Channels (in→out) | Attn | Downsample |
